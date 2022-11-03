@@ -5,6 +5,7 @@ import 'package:meditationapp/config/color.config.dart';
 import 'package:meditationapp/config/font.config.dart';
 import 'package:get/get.dart';
 import 'package:meditationapp/global_widget/button.dart';
+import 'package:meditationapp/presentasion/topic/topic.main.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -14,6 +15,10 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  bool isShowPassword = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,13 +115,19 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(
                         height: 40,
                       ),
-                      const TextField(
-                        decoration: InputDecoration(
-                            fillColor: Color(0xffF2F3F7),
+                       TextFormField(
+                         onChanged: (String value) {
+                           setState(() {
+                             name.text = value;
+                           });
+                         },
+                        decoration:  InputDecoration(
+                            fillColor: const Color(0xffF2F3F7),
                             filled: true,
+                            suffixIcon: name.text.length < 4 ? null : const Icon(Icons.check, color: Colors.green),
                             hintText: "Full Name",
                             hintStyle: FontConfig.fontSmall16Light,
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
@@ -125,13 +136,19 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const TextField(
-                        decoration: InputDecoration(
-                            fillColor: Color(0xffF2F3F7),
+                       TextFormField(
+                        onChanged: (String value) {
+                          setState(() {
+                            email.text = value;
+                          });
+                        },
+                        decoration:  InputDecoration(
+                            fillColor: const Color(0xffF2F3F7),
+                            suffixIcon: password.text.length < 4 ? null : const Icon(Icons.check, color: Colors.green),
                             filled: true,
                             hintText: "Email address",
                             hintStyle: FontConfig.fontSmall16Light,
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
@@ -140,14 +157,29 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const TextField(
-                        obscureText: true,
+                       TextFormField(
+
+                         onChanged: (String value) {
+                            setState(() {
+                              password.text =value;
+                            });
+                         },
+                        obscureText: isShowPassword,
                         decoration: InputDecoration(
-                            fillColor: Color(0xffF2F3F7),
+
+                            fillColor: const Color(0xffF2F3F7),
+                            suffixIcon: Padding(padding: const EdgeInsets.only(top: 10), child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isShowPassword = !isShowPassword;
+                                  });
+                                },
+                                child: isShowPassword == false ? const FaIcon(FontAwesomeIcons.eye, color:Color(0xff3F414E)) : const FaIcon(FontAwesomeIcons.eyeSlash, color: Color(0xff3F414E))
+                            ),),
                             filled: true,
                             hintText: "Password",
                             hintStyle: FontConfig.fontSmall16Light,
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
@@ -156,7 +188,9 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Button(text: "Sign Up", onTap: () {}),
+                      Button(text: "Sign Up", onTap: () {
+                        Get.off( const TopicMain());
+                      }),
                       const SizedBox(
                         height: 20,
                       ),
