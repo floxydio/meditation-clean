@@ -28,9 +28,7 @@ class _TopicScreenState extends State<TopicScreen> {
                    Image.asset(listTopic[i].assetImage),
                    SizedBox(height: 20,),
                    InkWell(
-                     onTap: (){
-                       setState(() {})
-                     },
+                
                      child: Text(listTopic[i].nameTopic, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
                    ),
                    Text(listTopic[i].nameTopic)
