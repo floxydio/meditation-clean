@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:meditationapp/config/font.config.dart';
 
 class PlayScreen extends StatefulWidget {
-  const PlayScreen({Key? key}) : super(key: key);
+  final String? urlMusic;
+  final String? title;
+  final String? artist;
+  final String? image;
+  const PlayScreen(
+      {Key? key,
+      required this.urlMusic,
+      required this.image,
+      required this.title,
+      required this.artist})
+      : super(key: key);
 
   @override
   State<PlayScreen> createState() => _PlayScreenState();
@@ -16,9 +27,11 @@ class _PlayScreenState extends State<PlayScreen> {
     super.initState();
     audioPlayer
         .setAudioSource(AudioSource.uri(
-          Uri.parse("http://192.168.43.38:3000/storage/music/aerie.mp3"),
+          Uri.parse(widget.urlMusic.toString()),
         ))
         .catchError((error) => print("Error: $error"));
+
+    audioPlayer.play();
   }
 
   @override
@@ -31,61 +44,101 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // StreamBuilder<bool>(
-          //   stream: audioPlayer.shuffleModeEnabledStream,
-          //   builder: (context, snapshot) {
-          //     return _shuffleButton(context, snapshot.data ?? false);
-          //   },
-          // ),
-          StreamBuilder<SequenceState?>(
-            stream: audioPlayer.sequenceStateStream,
-            builder: (_, __) {
-              return IconButton(
-                icon: const Icon(Icons.skip_previous),
-                onPressed: () async {
-                  //audio previous 15seconds
-                  audioPlayer.seek(
-                      Duration(seconds: audioPlayer.position.inSeconds - 3));
-                },
-              );
-            },
-          ),
-          StreamBuilder<PlayerState>(
-            stream: audioPlayer.playerStateStream,
-            builder: (_, snapshot) {
-              final playerState = snapshot.data;
-              return _playPauseButton(playerState!);
-            },
-          ),
-          StreamBuilder<SequenceState?>(
-            stream: audioPlayer.sequenceStateStream,
-            builder: (_, __) {
-              return IconButton(
-                icon: const Icon(Icons.skip_previous),
-                onPressed: () async {
-                  //audio previous 15seconds
-                  audioPlayer.seek(
-                      Duration(seconds: audioPlayer.position.inSeconds + 10));
-                },
-              );
-            },
-          ),
-          StreamBuilder<LoopMode>(
-            stream: audioPlayer.loopModeStream,
-            builder: (context, snapshot) {
-              return _repeatButton(context, snapshot.data ?? LoopMode.off);
-            },
-          ),
-        ],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // StreamBuilder<bool>(
+            //   stream: audioPlayer.shuffleModeEnabledStream,
+            //   builder: (context, snapshot) {
+            //     return _shuffleButton(context, snapshot.data ?? false);
+            //   },
+            // ),
+            StreamBuilder<SequenceState?>(
+              stream: audioPlayer.sequenceStateStream,
+              builder: (_, __) {
+                return IconButton(
+                  icon: const Icon(Icons.skip_previous),
+                  onPressed: () async {
+                    //audio previous 15seconds
+                    audioPlayer.seek(
+                        Duration(seconds: audioPlayer.position.inSeconds - 3));
+                  },
+                );
+              },
+            ),
+            StreamBuilder<PlayerState>(
+              stream: audioPlayer.playerStateStream,
+              builder: (_, snapshot) {
+                final playerState = snapshot.data;
+                return _playPauseButton(playerState);
+              },
+            ),
+            StreamBuilder<SequenceState?>(
+              stream: audioPlayer.sequenceStateStream,
+              builder: (_, __) {
+                return IconButton(
+                  icon: const Icon(Icons.skip_previous),
+                  onPressed: () async {
+                    //audio previous 15seconds
+                    audioPlayer.seek(
+                        Duration(seconds: audioPlayer.position.inSeconds + 10));
+                  },
+                );
+              },
+            ),
+            StreamBuilder<LoopMode>(
+              stream: audioPlayer.loopModeStream,
+              builder: (context, snapshot) {
+                return _repeatButton(context, snapshot.data ?? LoopMode.off);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+                top: 20,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: [
+                      Text(
+                        widget.artist.toString(),
+                        style: FontConfig.fontLarge
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(widget.title.toString(),
+                          style: FontConfig.fontSmall14Medium.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey)),
+                    ],
+                  ),
+                )),
+            Positioned.fill(
+                child: Align(
+              alignment: Alignment.center,
+              child: Image.network(
+                widget.image.toString(),
+                fit: BoxFit.fill,
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
 
-  Widget _playPauseButton(PlayerState playerState) {
-    final processingState = playerState.processingState;
+  Widget _playPauseButton(PlayerState? playerState) {
+    final processingState = playerState?.processingState;
     if (processingState == ProcessingState.loading ||
         processingState == ProcessingState.buffering) {
       return Container(

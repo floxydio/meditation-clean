@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:meditationapp/presentasion/play/play_screen.dart';
 import 'package:meditationapp/presentasion/topic/models/list_topic.model.dart';
 
 class TopicScreen extends StatefulWidget {
@@ -29,14 +31,14 @@ class _TopicScreenState extends State<TopicScreen> {
                 "to Silent Moon?",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "choose a topic to focuse on",
                 style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               StaggeredGrid.count(
@@ -47,34 +49,38 @@ class _TopicScreenState extends State<TopicScreen> {
                   for (int i = 0; i < listTopic.length; i++)
                     StaggeredGridTile.fit(
                       crossAxisCellCount: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: listTopic[i].colorCard,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              listTopic[i].assetImage,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 16.0, bottom: 16),
-                              child: Text(
-                                listTopic[i].nameTopic,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                      child: InkWell(
+                        onTap: () {
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: listTopic[i].colorCard,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                listTopic[i].assetImage,
+                                fit: BoxFit.cover,
                               ),
-                            ),
-                            // Text(listTopic[i].nameTopic)
-                          ],
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 16.0, bottom: 16),
+                                child: Text(
+                                  listTopic[i].nameTopic,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              // Text(listTopic[i].nameTopic)
+                            ],
+                          ),
                         ),
                       ),
                     )
