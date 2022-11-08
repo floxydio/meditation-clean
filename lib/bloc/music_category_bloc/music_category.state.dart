@@ -5,24 +5,24 @@ abstract class MusicCategoryEvent extends Equatable {
   const MusicCategoryEvent();
 }
 
-class MusicInitial extends MusicCategoryEvent {
-  const MusicInitial();
+class MusicCategoryInitial extends MusicCategoryEvent {
+  const MusicCategoryInitial();
 
   @override
   List<Object> get props => [];
 }
 
-class MusicLoading extends MusicCategoryEvent {
-  const MusicLoading();
+class MusicCategoryLoading extends MusicCategoryEvent {
+  const MusicCategoryLoading();
 
   @override
   List<Object> get props => [];
 }
 
-class MusicLoaded extends MusicCategoryEvent {
+class MusicCategoryLoaded extends MusicCategoryEvent {
   final List<MusicData> musicData;
 
-  const MusicLoaded(this.musicData);
+  const MusicCategoryLoaded(this.musicData);
 
   @override
   List<Object> get props => [musicData];
