@@ -3,7 +3,7 @@ import 'package:meditationapp/models/music.dto.dart';
 
 class MusicRepository {
   static Future<List<MusicData>> getMusics() async {
-    var response = await Dio().get("http://192.168.43.110:3000/music",
+    var response = await Dio().get("http://192.168.43.38:3000/music",
         options: Options(
           headers: {
             "Accept": "application/json",
@@ -22,7 +22,7 @@ class MusicRepository {
 
   static Future<List<MusicData>> getMusicsByCategory(String category) async {
     var response =
-        await Dio().get("http://192.168.43.110:3000/music-category/$category",
+        await Dio().get("http://192.168.43.38:3000/music-category/$category",
             options: Options(
               headers: {
                 "Accept": "application/json",

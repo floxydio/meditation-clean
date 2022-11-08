@@ -29,6 +29,7 @@ class _PlayScreenState extends State<PlayScreen> {
         .setAudioSource(AudioSource.uri(
           Uri.parse(widget.urlMusic.toString()),
         ))
+        // ignore: avoid_print
         .catchError((error) => print("Error: $error"));
 
     audioPlayer.play();
@@ -36,7 +37,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     audioPlayer.dispose();
   }
